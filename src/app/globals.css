@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+
+@plugin "daisyui";
+
+
+.grident {
+   background: #000f17;
+background: linear-gradient(90deg, rgba(0, 15, 23, 0.42) 16%, rgba(250, 250, 250, 1) 100%, rgba(237, 221, 83, 1) 100%);
+}
