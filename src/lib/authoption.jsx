@@ -21,7 +21,6 @@ export const authOptions = {
             },
 
             async authorize(credentials, req) {
-                console.log('credintail', credentials)
 
                 const user =await mongodbFinddata(credentials)
                 if (!user) {

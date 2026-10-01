@@ -1,24 +1,34 @@
 "use client";
-
-import { mongodbinsartData } from "@/app/Checkout/[id]/mongodbinsartData";
-import { useSession } from "next-auth/react";
 import React from "react";
-
-const CheckoutForm = ({ singlaData }) => {
-    const { service_id, _id } = singlaData;
-    
-    const Session = useSession()
-    const user = Session?.data?.user;
+import Swal from "sweetalert2";
 
 
-    const handleSubmit =async (e) => {
+const Booking_updat = ({ data }) => {
+    const { singalBooking } = data;
+    const { service_id, phone } = singalBooking;
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-        const totalData = { ...data,serviceId: service_id, service_id: _id }
+        const datas = Object.fromEntries(formData.entries());
 
-        const rsc = await mongodbinsartData(totalData);
+        const res = await fetch(`https://car-doctor-recources.vercel.app/api/My_booking/${service_id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(datas)
+        })
+        const postadResponc = await res.json()
+
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1500
+        });
     };
 
 
@@ -26,7 +36,7 @@ const CheckoutForm = ({ singlaData }) => {
         <div className="min-h-screen bg-white px-4 py-8">
             <div className="mx-auto max-w-7xl">
                 <h1 className="mb-6 text-center text-2xl font-semibold text-gray-700">
-                    Book Service: {singlaData?.title}
+                    Book Service:
                 </h1>
 
                 <form onSubmit={handleSubmit}>
@@ -39,8 +49,8 @@ const CheckoutForm = ({ singlaData }) => {
                             </label>
 
                             <input
-                                value={user?.name || ""}
-                                readOnly
+                                defaultValue={singalBooking.name}
+
                                 type="text"
                                 name="name"
                                 placeholder=""
@@ -70,7 +80,7 @@ const CheckoutForm = ({ singlaData }) => {
                             </label>
 
                             <input
-                                defaultValue={singlaData?.email}
+                                defaultValue={singalBooking.email}
                                 type="email"
                                 name="email"
                                 placeholder="email"
@@ -85,10 +95,9 @@ const CheckoutForm = ({ singlaData }) => {
                             </label>
 
                             <input
+                                defaultValue={singalBooking.amount}
                                 type="text"
                                 name="amount"
-                                value={singlaData?.price || ""}
-                                readOnly
                                 className="h-11 w-full rounded-lg border border-gray-200 px-4 outline-none focus:border-purple-500"
                             />
                         </div>
@@ -100,6 +109,8 @@ const CheckoutForm = ({ singlaData }) => {
                             </label>
 
                             <input
+                                defaultValue={singalBooking.phone}
+
                                 type="tel"
                                 name="phone"
                                 placeholder="Your Phone"
@@ -114,6 +125,7 @@ const CheckoutForm = ({ singlaData }) => {
                             </label>
 
                             <input
+                                defaultValue={singalBooking.address}
                                 type="text"
                                 name="address"
                                 placeholder="Your Address"
@@ -125,6 +137,7 @@ const CheckoutForm = ({ singlaData }) => {
 
                     {/* Button */}
                     <button
+
                         type="submit"
                         className="mt-5 h-11 w-full rounded-lg bg-gradient-to-r from-purple-700 to-violet-600 text-sm font-medium text-white transition hover:opacity-90"
                     >
@@ -136,4 +149,4 @@ const CheckoutForm = ({ singlaData }) => {
     );
 };
 
-export default CheckoutForm;
+export default Booking_updat;

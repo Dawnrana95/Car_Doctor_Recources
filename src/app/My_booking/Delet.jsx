@@ -8,7 +8,7 @@ const Delet = ({id,refetch}) => {
     
 
     const handalOnclick = async ( id ) => {
-        const res = await fetch(`http://localhost:3000/api/apies/${id}`,{
+        const res = await fetch(`https://car-doctor-recources.vercel.app/api/apies/${id}`,{
             method: "DELETE"
         })
         const data = await res.json();

@@ -9,7 +9,7 @@ export const GET = async (req) => {
     if (seaction) {
 
         const email = seaction?.user?.email;
-        
+
         const mongodb = await mongodbConnect();
         const cullaction = mongodb.collection('BookService')
 
@@ -17,6 +17,7 @@ export const GET = async (req) => {
         return NextResponse.json(res)
     }
 
-    return NextResponse.json({})
+    return NextResponse.json({ error: "Data not Found" },
+        { status: 404 })
 
 }
